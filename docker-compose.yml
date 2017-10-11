@@ -1,0 +1,40 @@
+version : '3'
+
+services:
+  db: 
+    image: mysql
+    restart: 'always'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql-data:/var/lib/mysql   
+    ports:
+     - 3306:3306      
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+     - PMA_HOST='dbhost'
+    restart: always
+    ports:
+     - 8080:80
+    volumes:
+     - /sessions
+    depends_on:
+      - db            
+  apache:
+    build: ./build/apache-php7.1
+    restart: 'always'    
+    ports:
+     - "80:80"
+    restart: always
+    volumes:
+      - ./apache-hosts:/etc/apache2
+      #- ./build/php-conf:/usr/local/etc/php/conf.d
+      - ./app:/var/www/html
+    depends_on:
+      - db
