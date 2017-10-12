@@ -3,6 +3,7 @@ version : '3'
 services:
   db: 
     image: mysql
+    container_name: mysql
     restart: 'always'
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -28,12 +29,13 @@ services:
       - db            
   apache:
     build: ./build/apache-php7.1
+    container_name: apache
     restart: 'always'    
     ports:
      - "80:80"
     restart: always
     volumes:
-      - ./apache-hosts:/etc/apache2
+      #- ./apache-hosts:/etc/apache2
       #- ./build/php-conf:/usr/local/etc/php/conf.d
       - ./app:/var/www/html
     depends_on:
