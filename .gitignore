@@ -1,3 +1,4 @@
 /.idea
-/.mysql-data
-/.app
+app/*
+mysql-data/*
+!.gitkeep
